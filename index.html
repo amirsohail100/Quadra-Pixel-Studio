@@ -6,6 +6,7 @@
 <title>Quadra Pixel – Indie game development</title>
 <meta name="description" content="Quadra Pixel is a two-person indie game studio.">
 <meta name="theme-color" content="#07070d">
+<script>try{var t=localStorage.getItem("qp-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +17,8 @@
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt="">Quadra<b>Pixel</b></a>
-    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
     <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="games.html">Games</a><a href="help.html">Help</a><a href="about.html">About</a></nav>
+    <div class="actions"><button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to light mode"><span class="ico" aria-hidden="true">☀</span></button><div class="auth-slot" id="authSlot"></div><button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button></div>
   </div>
 </header>
 <main>
@@ -26,7 +27,7 @@
     <div>
       <p class="eyebrow">Indie game development</p>
       <h1>Small games,<span class="l2">built by hand.</span></h1>
-      <p class="lead">Quadra Pixel is a two-person studio. We design, draw and code every game ourselves. Find one, install it on Android or iPhone, and play.</p>
+      <p class="lead">Quadra Pixel is a two-person studio. We design, draw and code every game ourselves. Find one, install it on Android, iPhone or Windows, and play.</p>
       <div class="row">
         <a class="btn" href="games.html">Browse games</a>
         <a class="btn ghost" href="about.html">Meet the team</a>
@@ -42,13 +43,18 @@
     <div class="features">
       <div class="panel"><span class="tag" style="background:var(--cyan)"></span><h3>Code &amp; art</h3><p>One of us draws every sprite and background, the other writes the code. Nothing is outsourced.</p></div>
       <div class="panel"><span class="tag" style="background:var(--red)"></span><h3>Pixel-first</h3><p>Sharp pixels, bright colours and small, focused games you can finish in a sitting.</p></div>
-      <div class="panel"><span class="tag" style="background:var(--purple)"></span><h3>Play anywhere</h3><p>Every release is available for Android and iPhone from our download page.</p></div>
+      <div class="panel"><span class="tag" style="background:var(--purple)"></span><h3>Play anywhere</h3><p>Every release is available for Android, iPhone and Windows from our download page.</p></div>
     </div>
   </section>
 
   <section class="section">
     <div class="section-head"><h2>Featured <span class="accent-c">games</span></h2><a class="btn ghost sm" href="games.html">All games</a></div>
     <div class="grid" id="featured"></div>
+  </section>
+
+  <section class="cta" style="margin-bottom:20px" data-guest-only hidden>
+    <div><h2>Join <span class="accent-c">Quadra</span> Pixel</h2><p class="muted" style="margin-top:8px">Create a free account to download our games. Just looking around? No problem, the whole site is open to explore.</p></div>
+    <div class="row"><button class="btn" type="button" data-auth="signup">Sign up</button><button class="btn ghost" type="button" data-auth="login">Log in</button></div>
   </section>
 
   <div class="cta">
@@ -63,8 +69,11 @@
     <nav aria-label="Footer"><a href="index.html">Home</a><a href="games.html">Games</a><a href="help.html">Help</a><a href="about.html">About</a></nav>
   </div>
 </footer>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/games-data.js"></script>
-
 <script src="js/main.js"></script>
 </body>
 </html>
