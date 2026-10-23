@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quadra Pixel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F2FF;--surface:#FFFFFF;--ink:#1B1633;--muted:#5E5882;--line:#DAD5F2;
+  --pink:#E8317F;--cyan:#0FA3B1;--sun:#F5B700;--on-accent:#FFFFFF;
+  --hero:#1B1633;--hero-ink:#F4F2FF;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#120E24;--surface:#1D1838;--ink:#F1EEFF;--muted:#A9A2D0;--line:#322B58;
+  --pink:#FF5C9B;--cyan:#35D3E0;--sun:#FFC93C;--on-accent:#1B1633;
+  --hero:#241E48;--hero-ink:#F1EEFF;}}
+:root[data-theme="dark"]{
+  --bg:#120E24;--surface:#1D1838;--ink:#F1EEFF;--muted:#A9A2D0;--line:#322B58;
+  --pink:#FF5C9B;--cyan:#35D3E0;--sun:#FFC93C;--on-accent:#1B1633;
+  --hero:#241E48;--hero-ink:#F1EEFF;}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "DM Sans",system-ui,sans-serif}
+h1,h2,h3,.brand{font-family:"Pixelify Sans","DM Sans",system-ui,sans-serif;margin:0;line-height:1.1}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:2px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.bar{display:flex;align-items:center;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;text-decoration:none;white-space:nowrap}
+.brand svg{width:36px;height:36px;flex:none}
+.search{flex:1;position:relative;max-width:520px;margin-left:auto}
+.search input{width:100%;height:44px;border:2px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px 0 42px;font:inherit;border-radius:6px}
+.search input::placeholder{color:var(--muted)}
+.search svg{position:absolute;left:12px;top:12px;width:20px;height:20px;color:var(--muted)}
+.hero{background:var(--hero);color:var(--hero-ink);margin:20px 0 0;border-radius:10px;padding:36px;display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;overflow:hidden}
+.hero h1{font-size:clamp(34px,6vw,60px);font-weight:700}
+.hero p{max-width:46ch;margin:14px 0 22px;color:var(--hero-ink);opacity:.82}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:2px solid var(--ink);border-radius:6px;background:var(--pink);color:var(--on-accent);font:700 15px "DM Sans",sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--ink);text-decoration:none}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor;box-shadow:none}
+.hero .btn{border-color:var(--hero-ink);box-shadow:3px 3px 0 var(--hero-ink)}
+.hero .btn.ghost{box-shadow:none}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.stage{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;max-width:340px;margin-left:auto;width:100%}
+.stage i{aspect-ratio:1;border-radius:2px;display:block}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:22px 0 6px;scrollbar-width:none}
+.chip{flex:none;min-height:40px;padding:0 16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;font:500 14px "DM Sans",sans-serif;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+h2{font-size:28px;margin:26px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.top{display:flex;gap:14px;align-items:center}
+.icon{width:72px;height:72px;border-radius:14px;flex:none;border:2px solid var(--ink);overflow:hidden}
+.icon svg{display:block;width:100%;height:100%}
+.card h3{font-size:20px}
+.meta{color:var(--muted);font-size:14px}
+.desc{margin:0;font-size:15px;color:var(--muted)}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.rate{font-weight:700;font-size:14px}
+.btn.sm{min-height:38px;padding:0 16px;font-size:14px}
+.empty{padding:40px 0;color:var(--muted)}
+.about{margin:40px 0 0;padding:28px;border:2px solid var(--line);border-radius:10px;background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.about p{margin:8px 0 0;color:var(--muted);max-width:60ch}
+footer{margin:40px 0 28px;padding-top:20px;border-top:2px solid var(--line);color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+dialog{border:2px solid var(--ink);border-radius:10px;background:var(--surface);color:var(--ink);padding:24px;width:min(420px,92vw)}
+dialog::backdrop{background:rgba(18,14,36,.6)}
+dialog h3{font-size:24px;margin-bottom:6px}
+dialog .row{margin-top:16px}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;padding:24px}.stage{margin:0;max-width:260px}
+  .about{grid-template-columns:1fr}.bar{flex-wrap:wrap}.search{order:3;flex-basis:100%;max-width:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <!-- LOGO SLOT: replace this placeholder SVG with the Quadra Pixel SVG -->
+  <a class="brand" href="#" aria-label="Quadra Pixel home">
+    <svg viewBox="0 0 4 4" shape-rendering="crispEdges" aria-hidden="true"><rect width="4" height="4" fill="#E8317F"/><rect x="1" y="1" width="2" height="2" fill="#1B1633"/></svg>
+    Quadra Pixel
+  </a>
+  <label class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="q" type="search" placeholder="Search games" autocomplete="off" aria-label="Search games">
+  </label>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <h1>Small games, drawn and built by hand.</h1>
+      <p>Quadra Pixel is a two-person game studio. Every game here is designed, drawn and coded by us. Find one, install it on Android or iPhone, and play.</p>
+      <div class="row">
+        <a class="btn" href="#games">Browse games</a>
+        <button class="btn ghost" id="aboutBtn" type="button">About the studio</button>
+      </div>
+    </div>
+    <div class="stage" id="stage" aria-hidden="true"></div>
+  </section>
+
+  <div class="chips" id="chips" role="group" aria-label="Filter by genre"></div>
+
+  <h2 id="games">All games</h2>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>No games match that search. Try another name or genre.</div>
+
+  <section class="about" id="about">
+    <div>
+      <h2 style="margin-top:0">Two people, one studio</h2>
+      <p>One of us draws every sprite, background and icon. The other writes the code, runs the website and manages the data. That is the whole team.</p>
+    </div>
+    <div>
+      <h2 style="margin-top:0">A Quadra brand</h2>
+      <p>Quadra Pixel is the games side of Quadra. New releases appear on this page first.</p>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Quadra Pixel</span><span>A Quadra brand</span></footer>
+</main>
+
+<dialog id="dlg">
+  <h3 id="dTitle">Install</h3>
+  <div class="meta">Choose your device.</div>
+  <div class="row">
+    <a class="btn" href="#" data-os="android">Android</a>
+    <a class="btn" href="#" data-os="ios" style="background:var(--cyan)">iPhone</a>
+    <button class="btn ghost" type="button" id="dClose">Close</button>
+  </div>
+</dialog>
+
+<script>
+// Placeholder catalogue: replace with real games (or load from the database later).
+var GAMES=[
+ {n:"Pixel Drift",g:"Racing",d:"Slide through neon corners in 60-second laps.",r:4.6,s:11,c:["#E8317F","#F5B700"]},
+ {n:"Block Garden",g:"Puzzle",d:"Plant, merge and grow a garden on a tiny grid.",r:4.8,s:12,c:["#0FA3B1","#F4F2FF"]},
+ {n:"Cave Runner",g:"Arcade",d:"Dash, jump and dodge through a collapsing cave.",r:4.4,s:13,c:["#F5B700","#1B1633"]},
+ {n:"Tiny Kingdom",g:"Strategy",d:"Build a small kingdom and defend it one wave at a time.",r:4.7,s:14,c:["#7A5CFF","#F5B700"]},
+ {n:"Star Sorter",g:"Puzzle",d:"Sort falling stars into the right colour lanes.",r:4.5,s:15,c:["#E8317F","#0FA3B1"]},
+ {n:"Moss &amp; Mortar",g:"Adventure",d:"Explore a ruined town and bring its tiles back to life.",r:4.9,s:16,c:["#2E9E5B","#F4F2FF"]}
+];
+var genre="All";
+function icon(s,c){var x=s*9301+49297,cells="";function rnd(){x=(x*9301+49297)%233280;return x/233280}
+ for(var y=0;y<5;y++)for(var i=0;i<3;i++){if(rnd()>.5){cells+='<rect x="'+i+'" y="'+y+'" width="1" height="1"/>';if(i<2)cells+='<rect x="'+(4-i)+'" y="'+y+'" width="1" height="1"/>'}}
+ return '<svg viewBox="-1 -1 7 7" shape-rendering="crispEdges"><rect x="-1" y="-1" width="7" height="7" fill="'+c[0]+'"/><g fill="'+c[1]+'">'+cells+'</g></svg>'}
+function render(){
+ var q=document.getElementById("q").value.trim().toLowerCase(),h="",n=0;
+ GAMES.forEach(function(m,i){
+  var name=m.n.replace("&amp;","&");
+  if(genre!=="All"&&m.g!==genre)return;
+  if(q&&(name+" "+m.g+" "+m.d).toLowerCase().indexOf(q)<0)return;
+  n++;
+  h+='<article class="card"><div class="top"><div class="icon">'+icon(m.s,m.c)+'</div><div><h3>'+m.n+'</h3><div class="meta">'+m.g+'</div></div></div><p class="desc">'+m.d+'</p><div class="foot"><span class="rate">★ '+m.r+'</span><button class="btn sm" type="button" data-i="'+i+'">Install</button></div></article>'});
+ document.getElementById("grid").innerHTML=h;
+ document.getElementById("empty").hidden=n>0}
+function chips(){
+ var gs=["All"];GAMES.forEach(function(m){if(gs.indexOf(m.g)<0)gs.push(m.g)});
+ var el=document.getElementById("chips");
+ el.innerHTML=gs.map(function(g){return '<button class="chip" type="button" aria-pressed="'+(g===genre)+'" data-g="'+g+'">'+g+'</button>'}).join("");}
+document.getElementById("chips").addEventListener("click",function(e){var g=e.target.getAttribute("data-g");if(!g)return;genre=g;chips();render()});
+document.getElementById("q").addEventListener("input",render);
+var dlg=document.getElementById("dlg");
+document.getElementById("grid").addEventListener("click",function(e){var i=e.target.getAttribute("data-i");if(i===null)return;
+ document.getElementById("dTitle").textContent="Install "+GAMES[i].n.replace("&amp;","&");dlg.showModal()});
+document.getElementById("dClose").addEventListener("click",function(){dlg.close()});
+dlg.addEventListener("click",function(e){if(e.target.getAttribute("data-os")){e.preventDefault()}});
+document.getElementById("aboutBtn").addEventListener("click",function(){document.getElementById("about").scrollIntoView({behavior:"smooth"})});
+// hero pixel stage
+(function(){var cols=["#E8317F","#0FA3B1","#F5B700","#7A5CFF","transparent","transparent","transparent"],s=7,h="";
+ for(var i=0;i<64;i++){s=(s*9301+49297)%233280;h+='<i style="background:'+cols[s%cols.length]+'"></i>'}
+ document.getElementById("stage").innerHTML=h})();
+chips();render();
+</script>
+</body>
+</html>
