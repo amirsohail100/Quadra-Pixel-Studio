@@ -28,8 +28,19 @@
     return '<svg viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true"><rect x="-1" y="-1" width="7" height="7" fill="' + c[0] + '"/><g fill="' + c[1] + '">' + cells + "</g></svg>";
   }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  /* Icons: look for assets/images/games/<game-name-slug>.png, else fall back to a pixel icon */
+  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+  function iconSrc(m) { return m.img || "assets/images/games/" + slug(m.n) + ".png"; }
+  function wireIcons(root) {
+    root.querySelectorAll("img[data-icon]").forEach(function (img) {
+      var idx = Number(img.getAttribute("data-icon")), box = img.parentNode;
+      function fallback() { box.innerHTML = pixelIcon(idx + 11, window.GAMES[idx].c); }
+      img.addEventListener("error", fallback);
+      if (img.complete && img.naturalWidth === 0) fallback();
+    });
+  }
   function cardHTML(m, i, withBtn) {
-    var ic = m.img ? '<img src="' + m.img + '" alt="" loading="lazy">' : pixelIcon(i + 11, m.c);
+    var ic = '<img src="' + iconSrc(m) + '" alt="" data-icon="' + i + '">';
     return '<article class="card"><div class="top"><div class="icon">' + ic + '</div><div><h3>' + esc(m.n) +
       '</h3><div class="meta">' + esc(m.g) + '</div></div></div><p class="desc">' + esc(m.d) +
       '</p><div class="foot"><span class="rate">★ ' + m.r + "</span>" +
@@ -47,6 +58,7 @@
   var featured = $("#featured");
   if (featured && window.GAMES) {
     featured.innerHTML = window.GAMES.slice(0, 3).map(function (m, i) { return cardHTML(m, i, false); }).join("");
+    wireIcons(featured);
   }
 
   /* ----- games page: search + genre filter + install dialog ----- */
@@ -67,6 +79,7 @@
         n++; html += cardHTML(m, i, true);
       });
       grid.innerHTML = html;
+      wireIcons(grid);
       $("#empty").hidden = n > 0;
       $("#count").textContent = n + (n === 1 ? " game" : " games");
     }
@@ -74,17 +87,30 @@
       var g = e.target.getAttribute("data-g"); if (!g) return; genre = g; chips(); render();
     });
     q.addEventListener("input", render);
-    grid.addEventListener("click", function (e) {
-      var i = e.target.getAttribute("data-i"); if (i === null) return;
-      var m = G[i];
-      $("#dTitle").textContent = "Install " + m.n;
-      [["#dAndroid", m.android], ["#dIos", m.ios]].forEach(function (p) {
-        var a = $(p[0]);
-        a.href = p[1] || "#";
-        a.setAttribute("aria-disabled", p[1] ? "false" : "true");
-        if (p[1]) { a.target = "_blank"; a.rel = "noopener"; }
-      });
+    var cur = null;
+    grid.addEventListener("click", async function (e) {
+      var b = e.target.closest("[data-i]"); if (!b) return;
+      var m = G[b.getAttribute("data-i")];
+      /* Downloading needs an account; browsing never does */
+      var ok = await window.QPAuthUI.require("Sign up or log in to download " + m.n + ". You can keep browsing without an account.");
+      if (!ok) return;
+      cur = m;
+      $("#dTitle").textContent = "Install " + cur.n;
+      $("#dMsg").hidden = true;
+      dlg.querySelectorAll("[data-os]").forEach(function (btn) { btn.disabled = !cur[btn.getAttribute("data-os")]; });
       dlg.showModal();
+    });
+    dlg.addEventListener("click", async function (e) {
+      var b = e.target.closest("[data-os]");
+      if (!b || b.disabled || !cur) return;
+      var os = b.getAttribute("data-os"), msg = $("#dMsg");
+      if (!(await window.QPAuthUI.require("Please log in to download."))) return;
+      msg.hidden = true;
+      try {
+        var url = await window.QPAuth.resolveLink(cur[os]);
+        window.QPAuth.logDownload(cur.n, os);
+        window.location.href = url;
+      } catch (err) { msg.textContent = err.message || "Download failed."; msg.hidden = false; }
     });
     $("#dClose").addEventListener("click", function () { dlg.close(); });
     dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
