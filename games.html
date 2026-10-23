@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Games – Quadra Pixel</title>
+<meta name="description" content="Browse and download Quadra Pixel games for Android and iPhone.">
+<meta name="theme-color" content="#07070d">
+<link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt="">Quadra<b>Pixel</b></a>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="games.html" aria-current="page">Games</a><a href="help.html">Help</a><a href="about.html">About</a></nav>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <div class="page-title">
+    <p class="eyebrow">Download</p>
+    <h1>Our <span class="accent-r">games</span></h1>
+    <p>Search by name or genre, then pick Android or iPhone to install.</p>
+  </div>
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="q" type="search" placeholder="Search games…" autocomplete="off" aria-label="Search games">
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Filter by genre"></div>
+  <div class="count" id="count" aria-live="polite"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>No games match that search. Try another name or genre.</div>
+</div>
+<dialog id="dlg">
+  <h3 id="dTitle">Install</h3>
+  <p class="muted">Choose your device.</p>
+  <div class="row">
+    <a class="btn" id="dAndroid" href="#">Android</a>
+    <a class="btn cyan" id="dIos" href="#">iPhone</a>
+    <button class="btn ghost" type="button" id="dClose">Close</button>
+  </div>
+</dialog>
+</main>
+<footer class="site-footer">
+  <div class="wrap foot-in">
+    <span>© <span id="year">2026</span> Quadra Pixel · Indie game development</span>
+    <nav aria-label="Footer"><a href="index.html">Home</a><a href="games.html">Games</a><a href="help.html">Help</a><a href="about.html">About</a></nav>
+  </div>
+</footer>
+<script src="js/games-data.js"></script>
+
+<script src="js/main.js"></script>
+</body>
+</html>
