@@ -6,6 +6,7 @@
 <title>Help – Quadra Pixel</title>
 <meta name="description" content="Install guides, FAQ and contact for Quadra Pixel.">
 <meta name="theme-color" content="#07070d">
+<script>try{var t=localStorage.getItem("qp-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +17,8 @@
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt="">Quadra<b>Pixel</b></a>
-    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
     <nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="games.html">Games</a><a href="help.html" aria-current="page">Help</a><a href="about.html">About</a></nav>
+    <div class="actions"><button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to light mode"><span class="ico" aria-hidden="true">☀</span></button><div class="auth-slot" id="authSlot"></div><button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button></div>
   </div>
 </header>
 <main>
@@ -30,6 +31,7 @@
   <div class="help-grid">
     <div>
       <h2 style="font-size:24px;margin-bottom:16px">Questions</h2>
+      <details><summary>Do I need an account?</summary><div class="ans">No. You can explore every page without signing up. An account is only needed when you download a game. Use the Sign up button at the top of any page.</div></details>
       <details open><summary>How do I install a game on Android?</summary><div class="ans"><ol class="steps">
         <li>Open the Games page and tap Install on the game you want.</li>
         <li>Choose Android and follow the link.</li>
@@ -40,7 +42,13 @@
         <li>Choose iPhone and follow the link.</li>
         <li>Tap Get and confirm with Face ID, Touch ID or your passcode.</li>
         <li>Open the game from your home screen.</li></ol></div></details>
-      <details><summary>The Install button says the link is not ready</summary><div class="ans">That game has no download link yet. It will be enabled once it is released for your device. Check back soon.</div></details>
+      <details><summary>How do I install a game on Windows?</summary><div class="ans"><ol class="steps">
+        <li>Open the Games page and click Install on the game you want.</li>
+        <li>Choose Windows and wait for the installer or zip file to download.</li>
+        <li>Open the file. If it is a zip, extract it first, then run the installer.</li>
+        <li>If Windows SmartScreen warns you, check the file came from this site, then choose More info and Run anyway.</li>
+        <li>Start the game from the Start menu or the desktop shortcut.</li></ol></div></details>
+      <details><summary>The Install button says the link is not ready</summary><div class="ans">That game has no download link yet for your device. It will be enabled once it is released. Check back soon.</div></details>
       <details><summary>Are the games free?</summary><div class="ans">Each game page lists its own details. Edit this answer to match your pricing.</div></details>
       <details><summary>I found a bug. What should I do?</summary><div class="ans">Send us the game name, your device and what happened using the form on this page.</div></details>
     </div>
@@ -63,7 +71,10 @@
     <nav aria-label="Footer"><a href="index.html">Home</a><a href="games.html">Games</a><a href="help.html">Help</a><a href="about.html">About</a></nav>
   </div>
 </footer>
-
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
