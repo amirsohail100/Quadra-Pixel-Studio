@@ -18,6 +18,8 @@ quadra-pixel/
 ├── js/auth-ui.js       Sign up / log in dialog, header account area
 ├── js/firebase-config.js   PASTE YOUR FIREBASE KEYS HERE
 ├── js/games-data.js    EDIT THIS: games, links, ratings
+├── js/banners-data.js  EDIT THIS: home page banners (text, picture, button)
+├── js/banners.js       Home banner slider (auto, wheel, swipe)
 ├── assets/images/      logo files, team photos, games/ (your custom game icons)
 ├── firebase/           Firestore + Storage security rules
 ├── firebase.json       Firebase CLI config
@@ -26,6 +28,7 @@ quadra-pixel/
 
 ## Things to edit
 - **Games:** `js/games-data.js` (name, genre, description, Android / iOS / Windows links).
+- **Home banners:** `js/banners-data.js`; put your banner pictures (1200x600) in `assets/images/banners/`.
 - **Game icons:** put `<game-name>.png` in `assets/images/games/` (see the README.txt there).
 - **Team photos:** replace `assets/images/team/friend.svg` and `me.svg` (update `src` in `about.html` if the extension changes).
 - **Names, bios, skills, links:** `about.html`.
