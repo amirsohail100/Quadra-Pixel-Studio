@@ -23,6 +23,19 @@
 </header>
 <main>
 <div class="wrap">
+  <section class="showcase" id="showcase" aria-roledescription="carousel" aria-label="Featured games and news">
+    <div class="slider" tabindex="0">
+      <div class="sl-stage"></div>
+      <button class="sl-nav prev" type="button" aria-label="Previous banner">‹</button>
+      <button class="sl-nav next" type="button" aria-label="Next banner">›</button>
+      <div class="sl-dots" role="group" aria-label="Choose banner"></div>
+    </div>
+    <div class="tiles">
+      <button class="tile" type="button" hidden></button>
+      <button class="tile" type="button" hidden></button>
+    </div>
+  </section>
+
   <section class="hero">
     <div>
       <p class="eyebrow">Indie game development</p>
@@ -74,6 +87,8 @@
 <script src="js/auth-ui.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/games-data.js"></script>
+<script src="js/banners-data.js"></script>
+<script src="js/banners.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
