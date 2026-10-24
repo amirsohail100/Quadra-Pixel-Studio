@@ -1,71 +1,85 @@
-QUADRA PIXEL – SOURCE-AVAILABLE LICENSE
+QUADRA PIXEL SOURCE-AVAILABLE LICENSE
+Version 1.0
 
-Copyright (c) 2026 [YOUR NAME] / Quadra. All rights reserved except as
-stated below.
+Copyright (c) 2026 [YOUR NAME], Quadra. All rights reserved, except as
+expressly granted in this License.
 
-ABOUT THIS PROJECT
+PREAMBLE
 
-Quadra Pixel is a personal project of [YOUR NAME] and is publicly
-available. It is a sub-brand of the Quadra brand and is inspired by the
-Quadra Studio brand. Quadra Pixel is built for game developers: it is the
-home for games made by [YOUR NAME] and his team, and in the future it may
-also host games made by other developers.
+Quadra Pixel (the "Project") is a personal project of [YOUR NAME] (the
+"Licensor") and is made publicly available. It is a sub-brand of the Quadra
+brand and draws its inspiration from the Quadra Studio brand. The Project
+serves game developers and is the home of games created by the Licensor and
+his team. In the future, it may also host games created by third-party
+developers.
 
-1. PERMISSION
+1. GRANT OF PERMISSION
 
-You may view, read, clone and study the source code of this project, and
-modify it on your own computer, for personal, educational and
-non-commercial purposes.
+Subject to the terms of this License, you are granted a limited,
+non-exclusive, non-transferable, revocable permission to view, clone and
+study the source code of the Project, and to modify it on your own device,
+solely for personal, educational and non-commercial purposes.
 
 2. RESTRICTIONS
 
-Without prior written permission from the copyright holder, you may not:
+Without the prior written consent of the Licensor, you shall not:
 
-a. use this project or any part of it for commercial purposes;
-b. publish, host, sell or redistribute this project, or a modified
-version of it, as your own website, product or service;
-c. remove or change the copyright notice or this license;
-d. present this project or your own work as being made by, or endorsed
-by, Quadra, Quadra Studio or Quadra Pixel.
+(a) use the Project, or any portion of it, for any commercial purpose;
+(b) publish, host, sell, sublicense or otherwise distribute the Project,
+or any modified version of it, as your own website, product or
+service;
+(c) remove, alter or obscure any copyright notice or this License; or
+(d) represent the Project, or any work derived from it, as originating
+from or endorsed by Quadra, Quadra Studio or Quadra Pixel.
 
-3. BRAND AND ASSETS RESERVED
+3. RESERVATION OF BRAND AND ASSETS
 
-This license covers the source code of the website only. The names
-"Quadra", "Quadra Studio" and "Quadra Pixel", their logos, the artwork,
-images, banners, icons, game titles and all other branding are NOT
-licensed to you. They remain the exclusive property of the copyright
-holder and may not be used without written permission.
+This License applies to the source code of the website only. The names
+"Quadra", "Quadra Studio" and "Quadra Pixel", together with all associated
+logos, artwork, images, banners, icons, game titles and other branding
+materials (collectively, the "Reserved Materials"), are not licensed to
+you. All rights in the Reserved Materials remain exclusively with the
+Licensor, and no use of them is permitted without the Licensor's prior
+written consent.
 
-4. GAMES
+4. GAMES AND THIRD-PARTY CONTENT
 
-Games shown on or distributed through Quadra Pixel are the property of
-their respective creators. This license does not give you any rights to
-those games, their files or their artwork. Games from other developers,
-if added in the future, remain the property of those developers and are
-published under their own terms.
+Games displayed on, or distributed through, the Project remain the property
+of their respective creators. Nothing in this License grants you any right
+in or to those games, their files or their artwork. Any games contributed
+by third-party developers in the future will remain the property of those
+developers and will be published under their own terms.
 
 5. CONTRIBUTIONS
 
-If you send a suggestion, fix or other contribution to this project, you
-give the copyright holder the right to use, modify and include it in the
-project without payment or obligation.
+Any suggestion, correction or other contribution that you submit to the
+Project is provided to the Licensor on a royalty-free basis, and the
+Licensor may use, modify and incorporate it into the Project without
+obligation or compensation to you.
 
-6. NO WARRANTY
+6. DISCLAIMER OF WARRANTY
 
-THIS PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+THE PROJECT IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY
+KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT.
 
 7. LIMITATION OF LIABILITY
 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THIS PROJECT OR ITS USE.
+TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE
+LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE PROJECT OR THE USE OF, OR OTHER DEALINGS IN, THE
+PROJECT.
 
 8. TERMINATION
 
-Your permission under this license ends automatically if you break any of
-its terms. To use this project in any way not allowed above, contact the
-copyright holder for written permission.
+This License and the permissions granted under it terminate automatically
+if you breach any of its terms. Upon termination, you must cease all use of
+the Project. Any use of the Project not expressly permitted by this License
+requires the prior written consent of the Licensor.
 
-Contact: [YOUR EMAIL]
+9. CONTACT
+
+For permissions and licensing enquiries, please contact:
+[YOUR NAME] - [YOUR EMAIL]
