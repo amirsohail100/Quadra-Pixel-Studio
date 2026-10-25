@@ -3,50 +3,8 @@
   "use strict";
   var $ = function (s, r) { return (r || document).querySelector(s); };
 
-  /* ----- mobile nav ----- */
-  var toggle = $(".nav-toggle"), nav = $(".nav");
-  if (toggle && nav) {
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", open);
-    });
-  }
-
   /* ----- footer year ----- */
   var y = $("#year"); if (y) y.textContent = new Date().getFullYear();
-
-  /* ----- deterministic pixel icon for games without an image ----- */
-  function pixelIcon(seed, c) {
-    var x = seed * 9301 + 49297, cells = "";
-    function rnd() { x = (x * 9301 + 49297) % 233280; return x / 233280; }
-    for (var r = 0; r < 5; r++) for (var i = 0; i < 3; i++) {
-      if (rnd() > 0.5) {
-        cells += '<rect x="' + i + '" y="' + r + '" width="1" height="1"/>';
-        if (i < 2) cells += '<rect x="' + (4 - i) + '" y="' + r + '" width="1" height="1"/>';
-      }
-    }
-    return '<svg viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true"><rect x="-1" y="-1" width="7" height="7" fill="' + c[0] + '"/><g fill="' + c[1] + '">' + cells + "</g></svg>";
-  }
-  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
-  /* Icons: look for assets/images/games/<game-name-slug>.png, else fall back to a pixel icon */
-  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
-  function iconSrc(m) { return m.img || "assets/images/games/" + slug(m.n) + ".png"; }
-  function wireIcons(root) {
-    root.querySelectorAll("img[data-icon]").forEach(function (img) {
-      var idx = Number(img.getAttribute("data-icon")), box = img.parentNode;
-      function fallback() { box.innerHTML = pixelIcon(idx + 11, window.GAMES[idx].c); }
-      img.addEventListener("error", fallback);
-      if (img.complete && img.naturalWidth === 0) fallback();
-    });
-  }
-  function cardHTML(m, i, withBtn) {
-    var ic = '<img src="' + iconSrc(m) + '" alt="" data-icon="' + i + '">';
-    return '<article class="card"><div class="top"><div class="icon">' + ic + '</div><div><h3>' + esc(m.n) +
-      '</h3><div class="meta">' + esc(m.g) + '</div></div></div><p class="desc">' + esc(m.d) +
-      '</p><div class="foot"><span class="rate">★ ' + m.r + "</span>" +
-      (withBtn ? '<button class="btn sm" type="button" data-i="' + i + '">Install</button>'
-               : '<a class="btn sm" href="games.html">View</a>') + "</div></article>";
-  }
 
   /* ----- home: hero pixel field + featured games ----- */
   var stage = $("#stage");
@@ -56,15 +14,14 @@
     stage.innerHTML = h;
   }
   var featured = $("#featured");
-  if (featured && window.GAMES) {
-    featured.innerHTML = window.GAMES.slice(0, 3).map(function (m, i) { return cardHTML(m, i, false); }).join("");
-    wireIcons(featured);
+  if (featured && window.QPGames) {
+    window.QPGames.render(featured, [0, 1, 2].filter(function (i) { return i < window.QPGames.list.length; }));
   }
 
-  /* ----- games page: search + genre filter + install dialog ----- */
+  /* ----- games page: search + genre filter (cards, hover preview, gallery and install live in game-ui.js) ----- */
   var grid = $("#grid");
-  if (grid && window.GAMES) {
-    var G = window.GAMES, genre = "All", q = $("#q"), dlg = $("#dlg");
+  if (grid && window.QPGames) {
+    var G = window.QPGames.list, genre = "All", q = $("#q");
     function chips() {
       var gs = ["All"]; G.forEach(function (m) { if (gs.indexOf(m.g) < 0) gs.push(m.g); });
       $("#chips").innerHTML = gs.map(function (g) {
@@ -72,48 +29,20 @@
       }).join("");
     }
     function render() {
-      var term = q.value.trim().toLowerCase(), html = "", n = 0;
+      var term = q.value.trim().toLowerCase(), ids = [];
       G.forEach(function (m, i) {
         if (genre !== "All" && m.g !== genre) return;
         if (term && (m.n + " " + m.g + " " + m.d).toLowerCase().indexOf(term) < 0) return;
-        n++; html += cardHTML(m, i, true);
+        ids.push(i);
       });
-      grid.innerHTML = html;
-      wireIcons(grid);
-      $("#empty").hidden = n > 0;
-      $("#count").textContent = n + (n === 1 ? " game" : " games");
+      window.QPGames.render(grid, ids);
+      $("#empty").hidden = ids.length > 0;
+      $("#count").textContent = ids.length + (ids.length === 1 ? " game" : " games");
     }
     $("#chips").addEventListener("click", function (e) {
       var g = e.target.getAttribute("data-g"); if (!g) return; genre = g; chips(); render();
     });
     q.addEventListener("input", render);
-    var cur = null;
-    grid.addEventListener("click", async function (e) {
-      var b = e.target.closest("[data-i]"); if (!b) return;
-      var m = G[b.getAttribute("data-i")];
-      /* Downloading needs an account; browsing never does */
-      var ok = await window.QPAuthUI.require("Sign up or log in to download " + m.n + ". You can keep browsing without an account.");
-      if (!ok) return;
-      cur = m;
-      $("#dTitle").textContent = "Install " + cur.n;
-      $("#dMsg").hidden = true;
-      dlg.querySelectorAll("[data-os]").forEach(function (btn) { btn.disabled = !cur[btn.getAttribute("data-os")]; });
-      dlg.showModal();
-    });
-    dlg.addEventListener("click", async function (e) {
-      var b = e.target.closest("[data-os]");
-      if (!b || b.disabled || !cur) return;
-      var os = b.getAttribute("data-os"), msg = $("#dMsg");
-      if (!(await window.QPAuthUI.require("Please log in to download."))) return;
-      msg.hidden = true;
-      try {
-        var url = await window.QPAuth.resolveLink(cur[os]);
-        window.QPAuth.logDownload(cur.n, os);
-        window.location.href = url;
-      } catch (err) { msg.textContent = err.message || "Download failed."; msg.hidden = false; }
-    });
-    $("#dClose").addEventListener("click", function () { dlg.close(); });
-    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
     chips(); render();
   }
 
