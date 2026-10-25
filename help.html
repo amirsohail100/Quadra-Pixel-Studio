@@ -6,19 +6,28 @@
 <title>Help – Quadra Pixel</title>
 <meta name="description" content="Install guides, FAQ and contact for Quadra Pixel.">
 <meta name="theme-color" content="#07070d">
-<script>try{var t=localStorage.getItem("qp-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>try{var t=localStorage.getItem("qp-theme");if(t==="system")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("qp-motion")==="reduced")document.documentElement.classList.add("reduce-motion")}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="has-sidebar">
+<aside class="sidebar" aria-label="Main navigation">
+  <div>
+    <a class="side-logo" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt=""></a>
+    <nav class="side-group top" aria-label="Pages"><a class="side-link" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a><a class="side-link" href="games.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="3"/><path d="M7 10v5M4.5 12.5h5"/><path d="M16 11h.01M18.5 14h.01"/></svg><span>Games</span></a><a class="side-link" href="help.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg><span>Help</span></a><a class="side-link" href="about.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14c3 0 4.5 2 4.5 5"/></svg><span>About</span></a></nav>
+  </div>
+  <nav class="side-group bottom" aria-label="Your account"><a class="side-link" href="downloads.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg><span>Downloads</span></a><a class="side-link" href="library.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="4" height="18" rx="1"/><rect x="10" y="3" width="4" height="18" rx="1"/><path d="M16.5 5.5l4 14.5"/></svg><span>Library</span></a><a class="side-link" href="settings.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Settings</span></a></nav>
+</aside>
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt="">Quadra<b>Pixel</b></a>
-    <nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="games.html">Games</a><a href="help.html" aria-current="page">Help</a><a href="about.html">About</a></nav>
-    <div class="actions"><button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to light mode"><span class="ico" aria-hidden="true">☀</span></button><div class="auth-slot" id="authSlot"></div><button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button></div>
+    <div class="actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to light mode"><span class="ico" aria-hidden="true">☀</span></button>
+      <div class="auth-slot" id="authSlot"></div>
+    </div>
   </div>
 </header>
 <main>
@@ -75,6 +84,7 @@
 <script src="js/auth.js"></script>
 <script src="js/auth-ui.js"></script>
 <script src="js/theme.js"></script>
+<script src="js/store.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
