@@ -9,6 +9,8 @@
   var dotsEl = root.querySelector(".sl-dots"), tiles = root.querySelectorAll(".tile");
   var INTERVAL = 5500, WHEEL_LOCK = 900;
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var autoplayOff = false;  /* Settings page switch */
+  try { autoplayOff = localStorage.getItem("qp-autoplay") === "off"; } catch (e) {}
   var list = [], slides = [], dots = [], idx = 0, timer = null, paused = false, lastSlide = 0;
 
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
@@ -91,7 +93,7 @@
   /* autoplay */
   function schedule() {
     clearTimeout(timer);
-    if (reduce || paused || list.length < 2 || document.hidden) return;
+    if (reduce || autoplayOff || paused || list.length < 2 || document.hidden) return;
     timer = setTimeout(function () { show(idx + 1, 1); }, INTERVAL);
   }
   function pause(v) { paused = v; schedule(); }
