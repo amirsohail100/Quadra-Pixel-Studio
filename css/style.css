@@ -73,7 +73,7 @@ main{flex:1}
 .hero h1 .l2{display:block;color:var(--red)}
 .hero p.lead{max-width:48ch;margin:20px 0 28px;color:var(--muted);font-size:18px}
 .hero-art{position:relative;display:grid;place-items:center}
-.hero-art .logo{width:min(320px,80%);filter:drop-shadow(0 0 28px rgba(138,43,226,.55));animation:float 4s ease-in-out infinite}
+.hero-art .logo{width:min(400px,86%);filter:drop-shadow(0 0 28px rgba(138,43,226,.55));animation:float 4s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-10px)}}
 .stage{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);gap:6px;opacity:.28;z-index:-1}
 .stage i{aspect-ratio:1;border-radius:2px;display:block}
@@ -283,8 +283,8 @@ textarea{min-height:130px;resize:vertical}
    ========================================================== */
 body.has-sidebar{padding-left:84px}
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:84px;z-index:25;display:flex;flex-direction:column;justify-content:space-between;padding:10px 8px;background:var(--header-bg);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-right:2px solid var(--line)}
-.side-logo{display:grid;place-items:center;height:48px;margin-bottom:14px}
-.side-logo img{width:38px;height:38px;transition:transform .25s}
+.side-logo{display:grid;place-items:center;height:52px;margin-bottom:14px}
+.side-logo img{width:46px;height:46px;transition:transform .25s}
 .side-logo:hover img{transform:scale(1.12) rotate(-4deg)}
 .side-group{display:flex;flex-direction:column;gap:6px}
 .side-link{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 2px;border-radius:8px;border:2px solid transparent;color:var(--muted);text-decoration:none;font:600 11px var(--font-body);letter-spacing:.03em;transition:background .2s,color .2s,border-color .2s}
