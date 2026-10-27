@@ -440,3 +440,12 @@ select:focus{outline:none;border-color:var(--cyan)}
 .up-dlg input[type=file]{padding:9px 12px}
 label.check{display:flex;flex-direction:row;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font:500 14px var(--font-body);color:var(--ink)}
 label.check input{width:auto;margin-top:3px;padding:0;flex:none}
+
+/* ---------- Play in the browser ---------- */
+.btn.cyan.sm{box-shadow:3px 3px 0 var(--purple)}
+.pl-overlay{position:fixed;inset:0;z-index:85;display:flex;flex-direction:column;background:rgba(7,7,13,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .25s ease}
+.pl-overlay.open{opacity:1}
+.pl-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:2px solid var(--line);background:var(--surface);flex:none}
+.pl-title{flex:1;min-width:0;font:700 18px var(--font-pixel);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-frame{flex:1;width:100%;border:0;background:#000}
+@media (max-width:600px){.pl-bar{padding:8px 10px;gap:6px}.pl-title{font-size:15px}}
