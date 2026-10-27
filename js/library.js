@@ -20,7 +20,7 @@
     var rows = items.map(function (d) { return { d: d, i: Q.find(d.game) }; }).filter(function (r) { return r.i >= 0; });
     dl.innerHTML = rows.map(function (r) {
       var when = new Date(r.d.at).toLocaleString([], { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
-      return '<li class="dl-row"><div class="icon">' + Q.icon(r.i) + '</div><div class="dl-main"><strong>' + esc(r.d.game) +
+      return '<li class="dl-row"><div class="icon">' + Q.icon(r.i) + '</div><div class="dl-main"><strong>' + esc(Q.list[r.i].n) +
         '</strong><span class="muted">' + esc(OSN[r.d.os] || r.d.os) + " · " + esc(when) + '</span></div>' +
         '<button class="btn sm" type="button" data-again="' + r.i + '">Download again</button></li>';
     }).join("");
@@ -51,4 +51,5 @@
   function render() { if (lib) renderLibrary(); if (dl) renderDownloads(); }
   A.onChange(render);                         /* runs once the account state is known, and on login/logout */
   window.addEventListener("qp-store", render);
+  window.addEventListener("qp-games", render);
 })();
