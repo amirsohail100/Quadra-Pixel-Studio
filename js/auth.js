@@ -51,11 +51,19 @@
     ]).then(function (m) {
       var app = m[0].initializeApp(CFG);
       fb = { app: app, A: m[1], S: m[2], auth: m[1].getAuth(app), db: m[2].getFirestore(app) };
-      m[1].onAuthStateChanged(fb.auth, function (u) { emit(u ? pub(u) : null); });
+      m[1].onAuthStateChanged(fb.auth, function (u) { emit(u ? pub(u) : null); if (u) syncPurchases(u); });
     }).catch(function (e) {
       console.error("Firebase failed to load", e);
       mode = "offline"; emit(null);
     });
+  }
+  /* paid games the visitor owns: users/{uid}/purchases/{gameKey} (written by you / a payment webhook, never by the browser) */
+  function syncPurchases(u) {
+    fb.S.getDocs(fb.S.collection(fb.db, "users", u.uid, "purchases")).then(function (snap) {
+      var ids = []; snap.forEach(function (d) { ids.push(d.id); });
+      try { localStorage.setItem("qp:purchases:" + u.uid, JSON.stringify(ids)); } catch (e) {}
+      window.dispatchEvent(new CustomEvent("qp-store", { detail: { kind: "purchases" } }));
+    }).catch(function (e) { console.warn("Purchases not loaded", e); });
   }
   function saveProfile(u, name, isNew) {
     var data = { name: name || "", email: u.email || "", lastLoginAt: fb.S.serverTimestamp() };
@@ -128,7 +136,10 @@
   /* "storage:games/file.apk" -> signed download URL (login required by rules) */
   function resolveLink(url) {
     if (!url) return Promise.reject(new Error("This download isn't available yet."));
-    if (url.indexOf("storage:") !== 0) return Promise.resolve(url);
+    if (url.indexOf("storage:") !== 0) {
+      if (!/^https?:\/\//i.test(url)) return Promise.reject(new Error("This download link isn't valid."));
+      return Promise.resolve(url);
+    }
     if (mode !== "firebase") return Promise.reject(new Error("Storage links need Firebase to be set up."));
     return import(BASE + "firebase-storage.js").then(function (S) {
       return S.getDownloadURL(S.ref(S.getStorage(fb.app), url.slice(8)));
@@ -138,6 +149,8 @@
   window.QPAuth = {
     ready: ready, mode: function () { return mode; }, user: function () { return current; },
     onChange: onChange, signUp: signUp, logIn: logIn, google: google, logOut: logOut,
-    logDownload: logDownload, resolveLink: resolveLink
+    logDownload: logDownload, resolveLink: resolveLink,
+    /* resolves to { app, A, S, db, auth } in Firebase mode, or null in demo mode */
+    firebase: function () { return initP.then(function () { return mode === "firebase" ? fb : null; }); }
   };
 })();
