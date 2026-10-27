@@ -399,3 +399,44 @@ html.modal-open{overflow:hidden}
 
 /* Settings > Reduce animations */
 html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+
+/* ==========================================================
+   Games sub-navigation, premium, Roblox, upload
+   ========================================================== */
+.page-title.with-action{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.page-title.with-action .row{padding-bottom:6px}
+.subnav{display:flex;gap:4px;overflow-x:auto;margin:22px 0 4px;border-bottom:2px solid var(--line);scrollbar-width:none}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{flex:none;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;margin-bottom:-2px;color:var(--muted);text-decoration:none;font:600 14px var(--font-pixel);letter-spacing:.08em;text-transform:uppercase;border-bottom:3px solid transparent;border-radius:8px 8px 0 0;transition:color .2s,background .2s,border-color .2s}
+.subnav a:hover{color:var(--ink);background:var(--surface)}
+.subnav a[aria-current="true"]{color:var(--ink);border-bottom-color:var(--cyan)}
+.subnav .n{font:700 11px var(--font-body);background:var(--bg-2);border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted)}
+.subnav .n:empty{display:none}
+.btn.gold{background:#f5b700;color:#1a1200;border-color:#f5b700;box-shadow:4px 4px 0 var(--purple)}
+.btn.gold:hover{background:#ffc928}
+.btn.sm.gold,.btn.sm.red{box-shadow:3px 3px 0 var(--purple)}
+a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.tags-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tags-row:empty{display:none}
+.tag-chip{display:inline-block;font:700 10px var(--font-body);letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;border:1.5px solid var(--cyan);color:var(--cyan)}
+.tag-chip.gold{border-color:#f5b700;color:#f5b700;background:rgba(245,183,0,.1)}
+.tag-chip.red{border-color:var(--red);color:var(--red)}
+.gm-text .tag-chip{margin-left:2px}
+.status{font:700 10px var(--font-body);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--bg-2);color:var(--muted);border:1.5px solid var(--line)}
+.status.approved{color:#2fbf71;border-color:#2fbf71}
+.status.pending{color:#f5b700;border-color:#f5b700}
+.status.demo{color:var(--cyan);border-color:var(--cyan)}
+.foot-btns{display:flex;gap:8px;align-items:center}
+.price-tag{color:#f5b700}
+.price-big{font:700 28px var(--font-pixel);color:#f5b700;margin:8px 0}
+.buy-dlg .row,.os-dlg .row{margin-top:16px}
+.up-dlg{width:min(560px,94vw);max-height:92vh;overflow:auto}
+.up-dlg .x{position:absolute;top:10px;right:12px;width:36px;height:36px;border:0;background:none;color:var(--muted);font-size:26px;cursor:pointer}
+.up-dlg .x:hover{color:var(--ink)}
+.up-dlg .seg{margin:12px 0 4px}
+.up-form{display:grid;gap:14px;margin-top:12px}
+select{font:500 16px var(--font-body);background:var(--bg-2);border:2px solid var(--line);color:var(--ink);border-radius:var(--radius);padding:12px 14px;width:100%}
+select:focus{outline:none;border-color:var(--cyan)}
+.up-dlg input[type=file]{padding:9px 12px}
+label.check{display:flex;flex-direction:row;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font:500 14px var(--font-body);color:var(--ink)}
+label.check input{width:auto;margin-top:3px;padding:0;flex:none}
