@@ -32,11 +32,23 @@
 </header>
 <main>
 <div class="wrap">
-  <div class="page-title">
-    <p class="eyebrow">Download</p>
-    <h1>Our <span class="accent-r">games</span></h1>
-    <p>Search by name or genre, then pick Android, iPhone or Windows to install.</p>
+  <div class="page-title with-action">
+    <div>
+      <p class="eyebrow">Download &amp; play</p>
+      <h1>Our <span class="accent-r">games</span></h1>
+      <p id="tabIntro"></p>
+    </div>
+    <div class="row">
+      <button class="btn" type="button" data-upload="download">+ Upload a game</button>
+      <button class="btn red" type="button" data-upload="roblox">+ Add Roblox game</button>
+    </div>
   </div>
+  <nav class="subnav" id="subnav" aria-label="Games sections">
+    <a href="#all" data-tab="all">All games <span class="n"></span></a>
+    <a href="#roblox" data-tab="roblox">Roblox <span class="n"></span></a>
+    <a href="#premium" data-tab="premium">Premium <span class="n"></span></a>
+    <a href="#mine" data-tab="mine">My games <span class="n"></span></a>
+  </nav>
   <div class="search">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
     <input id="q" type="search" placeholder="Search games…" autocomplete="off" aria-label="Search games">
@@ -44,7 +56,7 @@
   <div class="chips" id="chips" role="group" aria-label="Filter by genre"></div>
   <div class="count" id="count" aria-live="polite"></div>
   <div class="grid" id="grid"></div>
-  <div class="empty" id="empty" hidden>No games match that search. Try another name or genre.</div>
+  <div class="empty-state" id="empty" hidden></div>
 </div>
 </main>
 <footer class="site-footer">
@@ -59,7 +71,9 @@
 <script src="js/theme.js"></script>
 <script src="js/store.js"></script>
 <script src="js/games-data.js"></script>
+<script src="js/community.js"></script>
 <script src="js/game-ui.js"></script>
+<script src="js/upload.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
