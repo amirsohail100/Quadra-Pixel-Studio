@@ -45,6 +45,12 @@
       l.unshift({ game: game, os: os, at: new Date().toISOString() });
       write("downloads", l.slice(0, 100));
     },
+    purchases: function () { return read("purchases"); },
+    owns: function (key) { return read("purchases").indexOf(key) >= 0; },
+    addPurchase: function (key) {
+      var l = read("purchases");
+      if (l.indexOf(key) < 0) { l.push(key); write("purchases", l); }
+    },
     clear: function (kind) { try { localStorage.removeItem(key(kind)); } catch (e) {} changed(kind); }
   };
 })();
