@@ -39,7 +39,8 @@ quadra-pixel/
 - **Games:** `js/games-data.js` (name, genre, description, Android / iOS / Windows links).
 - **Home banners:** `js/banners-data.js`; put your banner pictures (1200x600) in `assets/images/banners/`.
 - **Premium and Roblox games:** in `js/games-data.js` add `price:249` (premium) or `type:"roblox", roblox:"https://www.roblox.com/games/..."`. See `docs/FIREBASE_SETUP.md` for payments and approving community uploads.
-- **Game icon + screenshots:** one folder per game in `assets/images/games/<game-name>/` (`icon.png` + screenshots), then list the screenshot names in `js/games-data.js` (see the README.txt there).
+- **Play in the browser:** put the game's `index.html` in its folder and add `play:"index.html"` in `js/games-data.js`.
+- **Game icon + screenshots:** one folder per game in `assets/images/games/<game-name>/` (`logo.svg` + screenshots + the game's `index.html`), then list the screenshot names in `js/games-data.js` (see the README.txt there).
 - **Team photos:** replace `assets/images/team/friend.svg` and `me.svg` (update `src` in `about.html` if the extension changes).
 - **Names, bios, skills, links:** `about.html`.
 - **Contact email:** `data-email` on the form in `help.html`.
