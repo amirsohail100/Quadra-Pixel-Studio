@@ -1,14 +1,41 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
     // Each user can read and write only their own profile
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
+
+    // Paid games a user owns. Document ID = game name exactly as in js/games-data.js.
+    // Created by you (Firebase console) or by a payment webhook, never from the browser.
+    match /users/{uid}/purchases/{gameKey} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
     // Download log: logged-in users can add entries about themselves; nobody can read from the browser
     match /downloads/{id} {
       allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
       allow read, update, delete: if false;
+    }
+
+    // Community games (uploaded by visitors).
+    // Everyone can read APPROVED games; owners can also read, create and delete their own.
+    // New games must start as "pending" and free. You approve a game by setting status to "approved" in the console.
+    match /games/{id} {
+      allow read: if resource.data.status == "approved"
+                  || (request.auth != null && resource.data.owner == request.auth.uid);
+      allow create: if request.auth != null
+                    && request.resource.data.owner == request.auth.uid
+                    && request.resource.data.status == "pending"
+                    && request.resource.data.price == 0
+                    && request.resource.data.type in ["download", "roblox"]
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 60
+                    && request.resource.data.desc is string && request.resource.data.desc.size() <= 120;
+      allow delete: if request.auth != null && resource.data.owner == request.auth.uid;
+      allow update: if false;
     }
   }
 }
