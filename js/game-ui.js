@@ -14,12 +14,27 @@
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
   function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
   function folder(m) { return "assets/images/games/" + slug(m.n) + "/"; }       /* one folder per game */
-  function iconSrc(m) { return m.img || folder(m) + "icon.png"; }
+  function iconSrc(m) { return m.img || (m.owner ? "" : folder(m) + "icon.png"); }
   function ageOf(m) { return m.age || "3+"; }
   function shotUrls(m) {
-    return (m.shots || []).map(function (f) { return /^(https?:|assets\/|\/)/.test(f) ? f : folder(m) + f; });
+    return (m.shots || []).map(function (f) { return /^(https?:|data:|assets\/|\/)/.test(f) ? f : folder(m) + f; });
   }
-  function find(name) { for (var i = 0; i < G.length; i++) if (G[i].n === name) return i; return -1; }
+  function keyOf(m) { return m.id || m.n; }            /* library / downloads key (studio games: the name) */
+  function find(key) { for (var i = 0; i < G.length; i++) if (keyOf(G[i]) === key && !G[i].removed) return i; return -1; }
+  function isPaid(m) { return m.price > 0; }
+  function isRoblox(m) { return m.type === "roblox"; }
+  function owned(m) { return !isPaid(m) || !!(Store && Store.owns(keyOf(m))); }
+  function safeUrl(u) { return /^https?:\/\//i.test(u || "") ? u : ""; }   /* never put javascript: links on a page */
+  function ratingText(m) { return m.r > 0 ? "★ " + m.r : "New"; }
+  function actionHTML(i, small) {
+    var m = G[i], cls = "btn" + (small ? " sm" : "");
+    if (isRoblox(m)) {
+      var u = safeUrl(m.roblox);
+      return '<a class="' + cls + ' red" href="' + esc(u || "#") + '" target="_blank" rel="noopener noreferrer"' + (u ? "" : ' aria-disabled="true"') + ">" + (small ? "Play" : "Play on Roblox") + "</a>";
+    }
+    if (isPaid(m) && !owned(m)) return '<button class="' + cls + ' gold" type="button" data-buy="' + i + '">Buy ₹' + m.price + "</button>";
+    return '<button class="' + cls + '" type="button" data-install="' + i + '">Install</button>';
+  }
   function pixelIcon(seed, c) {
     var x = seed * 9301 + 49297, cells = "";
     function rnd() { x = (x * 9301 + 49297) % 233280; return x / 233280; }
@@ -31,7 +46,10 @@
     }
     return '<svg viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true"><rect x="-1" y="-1" width="7" height="7" fill="' + c[0] + '"/><g fill="' + c[1] + '">' + cells + "</g></svg>";
   }
-  function iconHTML(i) { return '<img src="' + esc(iconSrc(G[i])) + '" alt="" data-icon="' + i + '">'; }
+  function iconHTML(i) {
+    var m = G[i], s = iconSrc(m);
+    return s ? '<img src="' + esc(s) + '" alt="" data-icon="' + i + '">' : pixelIcon(i + 11, m.c);
+  }
   function wire(root) {   /* no custom icon yet? show the generated pixel icon */
     root.querySelectorAll("img[data-icon]").forEach(function (img) {
       var idx = Number(img.getAttribute("data-icon")), box = img.parentNode;
@@ -42,22 +60,35 @@
   }
 
   /* ---------- card ---------- */
-  function cardHTML(i) {
-    var m = G[i];
+  function tagsHTML(m) {
+    return (isPaid(m) ? '<span class="tag-chip gold">Premium</span>' : "") + (isRoblox(m) ? '<span class="tag-chip red">Roblox</span>' : "") +
+      (m.owner ? '<span class="tag-chip">Community</span>' : "");
+  }
+  function cardHTML(i, opts) {
+    var m = G[i], manage = opts && opts.manage;
+    var status = manage ? '<span class="status ' + esc(m.status) + '">' + (m.status === "approved" ? "Live" : m.status === "demo" ? "On this device" : "Pending review") + "</span>" : "";
     return '<article class="card" data-i="' + i + '"><div class="top"><div class="icon">' + iconHTML(i) + '</div><div><h3>' +
       '<button class="card-link" type="button" aria-label="Open details for ' + esc(m.n) + '">' + esc(m.n) + '</button></h3>' +
-      '<div class="meta">' + esc(m.g) + '</div></div></div><p class="desc">' + esc(m.d) +
-      '</p><div class="foot"><span class="rate">★ ' + m.r + '</span><button class="btn sm" type="button" data-install="' + i + '">Install</button></div></article>';
+      '<div class="meta">' + esc(m.g) + (m.by ? " · by " + esc(m.by) : "") + '</div><div class="tags-row">' + tagsHTML(m) + status + '</div></div></div><p class="desc">' + esc(m.d) +
+      '</p><div class="foot"><span class="rate">' + ratingText(m) + (isPaid(m) ? ' · <b class="price-tag">₹' + m.price + "</b>" : "") + "</span>" +
+      '<span class="foot-btns">' + (manage && m.own ? '<button class="btn ghost sm" type="button" data-delete="' + i + '">Delete</button>' : "") + actionHTML(i, true) + "</span></div></article>";
   }
-  function render(container, indices) {
-    container.innerHTML = indices.map(cardHTML).join("");
+  var registry = [];
+  function render(container, indices, opts) {
+    container.innerHTML = indices.map(function (i) { return cardHTML(i, opts); }).join("");
     wire(container); mount(container);
+    var r = registry.filter(function (x) { return x.c === container; })[0];
+    if (r) { r.i = indices; r.o = opts; } else registry.push({ c: container, i: indices, o: opts });
   }
   function mount(root) {
     if (root._qp) return; root._qp = true;
     root.addEventListener("click", function (e) {
       var ins = e.target.closest("[data-install]");
       if (ins) { install(Number(ins.getAttribute("data-install"))); return; }
+      var buyB = e.target.closest("[data-buy]");
+      if (buyB) { buy(Number(buyB.getAttribute("data-buy"))); return; }
+      var del = e.target.closest("[data-delete]");
+      if (del) { remove(Number(del.getAttribute("data-delete"))); return; }
       var link = e.target.closest(".card-link");   /* its ::after covers the whole card */
       if (link) openModal(Number(link.closest(".card").getAttribute("data-i")), link);
     });
@@ -78,14 +109,17 @@
     hc.addEventListener("mouseenter", function () { clearTimeout(hideT); });
     hc.addEventListener("mouseleave", scheduleHide);
     hc.addEventListener("click", function (e) {
-      if (e.target.closest("[data-install]")) install(hcIdx); else openModal(hcIdx, hcCard);
+      if (e.target.closest("a")) return;   /* Roblox link opens by itself */
+      if (e.target.closest("[data-install]")) install(hcIdx);
+      else if (e.target.closest("[data-buy]")) buy(hcIdx);
+      else openModal(hcIdx, hcCard);
     });
     document.body.appendChild(hc);
   }
   function hoverHTML(i) {
     var m = G[i], shot = shotUrls(m)[0];
     return '<div class="hc-top"><div class="icon">' + iconHTML(i) + '</div><div class="hc-title"><h4>' + esc(m.n) +
-      '</h4><div class="meta">★ ' + m.r + " · " + esc(m.g) + '</div></div><button class="btn sm" type="button" data-install="' + i + '">Install</button></div>' +
+      '</h4><div class="meta">' + ratingText(m) + " · " + esc(m.g) + (isPaid(m) ? " · ₹" + m.price : "") + '</div></div>' + actionHTML(i, true) + '</div>' +
       '<p class="hc-desc">' + esc(m.d) + "</p>" +
       (shot ? '<div class="hc-shot"><img src="' + esc(shot) + '" alt=""></div>' : "") +
       '<div class="hc-foot"><span class="age" title="Age rating">' + esc(ageOf(m)) + '</span><span>Click for all screenshots</span></div>';
@@ -137,7 +171,7 @@
       '<button class="gm-arrow next" type="button" aria-label="Next screenshot">›</button>' +
       '<div class="gm-dots" role="group" aria-label="Choose screenshot"></div><div class="gm-count" aria-live="polite"></div></div>' +
       '<div class="gm-info"><div class="icon"></div><div class="gm-text"><h3 id="gmTitle"></h3><div class="meta"></div></div>' +
-      '<div class="gm-actions"><button class="btn ghost sm" type="button" data-save></button><button class="btn" type="button" data-install-modal>Install</button></div></div>' +
+      '<div class="gm-actions"><button class="btn ghost sm" type="button" data-save></button><span class="gm-cta"></span></div></div>' +
       '<p class="gm-desc"></p></div>';
     document.body.appendChild(gm);
     el.card = gm.querySelector(".gm-card"); el.close = gm.querySelector(".gm-close");
@@ -146,17 +180,20 @@
     el.dots = gm.querySelector(".gm-dots"); el.count = gm.querySelector(".gm-count");
     el.icon = gm.querySelector(".gm-info .icon"); el.title = gm.querySelector("#gmTitle");
     el.meta = gm.querySelector(".gm-info .meta"); el.desc = gm.querySelector(".gm-desc");
-    el.save = gm.querySelector("[data-save]"); el.inst = gm.querySelector("[data-install-modal]");
+    el.save = gm.querySelector("[data-save]"); el.cta = gm.querySelector(".gm-cta");
 
     el.close.addEventListener("click", closeModal);
-    gm.addEventListener("click", function (e) { if (e.target === gm) closeModal(); });   /* click the blur to close */
+    gm.addEventListener("click", function (e) {
+      if (e.target === gm) { closeModal(); return; }   /* click the blur to close */
+      var ib = e.target.closest("[data-install]"), bb = e.target.closest("[data-buy]");
+      if (ib) install(Number(ib.getAttribute("data-install"))); else if (bb) buy(Number(bb.getAttribute("data-buy")));
+    });
     el.prev.addEventListener("click", function () { slideTo(cur - 1); });
     el.next.addEventListener("click", function () { slideTo(cur + 1); });
     el.dots.addEventListener("click", function (e) {
       var d = e.target.closest("[data-dot]"); if (d) slideTo(Number(d.getAttribute("data-dot")));
     });
-    el.inst.addEventListener("click", function () { install(gmIdx); });
-    el.save.addEventListener("click", function () { if (Store) { Store.toggleLibrary(G[gmIdx].n); saveLabel(); } });
+    el.save.addEventListener("click", function () { if (Store) { Store.toggleLibrary(keyOf(G[gmIdx])); saveLabel(); } });
     window.addEventListener("qp-store", function () { if (gm && !gm.hidden) saveLabel(); });
 
     /* mouse wheel, swipe */
@@ -191,7 +228,7 @@
     });
   }
   function saveLabel() {
-    var on = Store && Store.inLibrary(G[gmIdx].n);
+    var on = Store && Store.inLibrary(keyOf(G[gmIdx]));
     el.save.textContent = on ? "★ In library" : "☆ Save to library";
     el.save.setAttribute("aria-pressed", !!on);
   }
@@ -227,7 +264,8 @@
     el.gal.classList.toggle("single", count < 2);
     el.icon.innerHTML = iconHTML(i); wire(el.icon);
     el.title.textContent = m.n;
-    el.meta.innerHTML = esc(m.g) + " · ★ " + m.r + ' · <span class="age">' + esc(ageOf(m)) + "</span>";
+    el.meta.innerHTML = esc(m.g) + (m.by ? " · by " + esc(m.by) : "") + " · " + ratingText(m) + (isPaid(m) ? " · ₹" + m.price : "") + ' · <span class="age">' + esc(ageOf(m)) + "</span>" + tagsHTML(m);
+    el.cta.innerHTML = actionHTML(i, false);
     el.desc.textContent = m.more || m.d;
     saveLabel(); slideTo(0, true);
     gm.hidden = false;
@@ -243,7 +281,52 @@
     if (opener && opener.focus) opener.focus({ preventScroll: true });
   }
 
-  /* ---------- install: needs an account, then pick a device ---------- */
+  /* ---------- install / buy: both need an account ---------- */
+  function ask(why) { return window.QPAuthUI ? window.QPAuthUI.require(why) : Promise.resolve(true); }
+  function install(i) {
+    var m = G[i];
+    if (isPaid(m) && !owned(m)) { buy(i); return; }
+    ask("Sign up or log in to download " + m.n + ". You can keep browsing without an account.").then(function (ok) { if (ok) osDialog(i); });
+  }
+  function remove(i) {
+    var m = G[i];
+    if (!window.QPCommunity || !confirm("Delete “" + m.n + "” from Quadra Pixel?")) return;
+    window.QPCommunity.remove(m).catch(function (e) { alert(e.message || "Could not delete the game."); });
+  }
+  var bd = null, bdIdx = -1;
+  function buy(i) {
+    var m = G[i];
+    ask("Sign up or log in to buy " + m.n + ". You can keep browsing without an account.").then(function (ok) { if (ok) buyDialog(i); });
+  }
+  function buyDialog(i) {
+    var m = G[i], link = safeUrl(m.payLink), demo = Auth.mode() === "demo";
+    if (!bd) {
+      bd = document.createElement("dialog"); bd.className = "buy-dlg";
+      bd.innerHTML = '<h3></h3><p class="price-big"></p><p class="muted note"></p><div class="row"><a class="btn gold" data-pay target="_blank" rel="noopener noreferrer">Pay now</a>' +
+        '<button class="btn cyan" type="button" data-unlock>Unlock (demo)</button><button class="btn ghost" type="button" data-close>Close</button></div>';
+      bd.addEventListener("click", function (e) {
+        if (e.target === bd || e.target.closest("[data-close]")) { bd.close(); return; }
+        if (e.target.closest("[data-unlock]")) {
+          var g = G[bdIdx];
+          if (Store) { Store.addPurchase(keyOf(g)); Store.addLibrary(keyOf(g)); }
+          bd.close(); osDialog(bdIdx);
+        }
+      });
+      document.body.appendChild(bd);
+    }
+    bdIdx = i; hideHover();
+    bd.querySelector("h3").textContent = "Buy " + m.n;
+    bd.querySelector(".price-big").textContent = "₹" + m.price + " · one-time";
+    var pay = bd.querySelector("[data-pay]");
+    pay.hidden = !link; if (link) pay.href = link;
+    bd.querySelector("[data-unlock]").hidden = !demo;
+    bd.querySelector(".note").textContent = link
+      ? "Pay on the secure page that opens. Once your payment is confirmed the game is added to your account; come back and refresh this page."
+      : (demo ? "Payments are not connected yet. In demo mode you can unlock the game on this device to test the flow."
+              : "Payments are not connected yet for this game. Please contact us to buy it.");
+    bd.showModal();
+  }
+
   var od = null, odIdx = -1;
   function install(i) {
     var m = G[i];
@@ -268,7 +351,7 @@
         try {
           var url = await Auth.resolveLink(m[os]);
           Auth.logDownload(m.n, os);
-          if (Store) { Store.addDownload(m.n, os); Store.addLibrary(m.n); }
+          if (Store) { Store.addDownload(keyOf(m), os); Store.addLibrary(keyOf(m)); }
           window.location.href = url;
         } catch (err) { msg.textContent = err.message || "Download failed."; msg.hidden = false; }
       });
@@ -281,6 +364,12 @@
     od.showModal();
   }
 
-  window.QPGames = { list: G, render: render, mount: mount, install: install, open: openModal, find: find,
-    icon: iconHTML, wire: wire, slug: slug };
+  window.addEventListener("qp-store", function (e) {   /* bought a game? switch Buy -> Install everywhere */
+    if (!e.detail || e.detail.kind !== "purchases") return;
+    registry.forEach(function (r) { if (r.c.isConnected) render(r.c, r.i, r.o); });
+    if (gm && !gm.hidden) el.cta.innerHTML = actionHTML(gmIdx, false);
+  });
+
+  window.QPGames = { list: G, render: render, mount: mount, install: install, buy: buy, open: openModal, find: find,
+    key: keyOf, icon: iconHTML, wire: wire, slug: slug };
 })();
