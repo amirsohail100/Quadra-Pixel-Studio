@@ -18,6 +18,8 @@ quadra-pixel/
 ├── js/main.js          Page behaviour
 ├── js/theme.js         Dark / light / system theme + reduce-motion
 ├── js/store.js         Library + download history on this device
+├── js/community.js     Games uploaded by visitors (Firebase, or demo mode)
+├── js/upload.js        "Upload your game" / "Add Roblox game" form
 ├── js/game-ui.js       Game cards, hover preview, screenshot gallery, install flow
 ├── js/library.js       Library and Downloads pages
 ├── js/settings.js      Settings page
@@ -36,6 +38,7 @@ quadra-pixel/
 ## Things to edit
 - **Games:** `js/games-data.js` (name, genre, description, Android / iOS / Windows links).
 - **Home banners:** `js/banners-data.js`; put your banner pictures (1200x600) in `assets/images/banners/`.
+- **Premium and Roblox games:** in `js/games-data.js` add `price:249` (premium) or `type:"roblox", roblox:"https://www.roblox.com/games/..."`. See `docs/FIREBASE_SETUP.md` for payments and approving community uploads.
 - **Game icon + screenshots:** one folder per game in `assets/images/games/<game-name>/` (`icon.png` + screenshots), then list the screenshot names in `js/games-data.js` (see the README.txt there).
 - **Team photos:** replace `assets/images/team/friend.svg` and `me.svg` (update `src` in `about.html` if the extension changes).
 - **Names, bios, skills, links:** `about.html`.
