@@ -13,28 +13,34 @@
   /* ---------- helpers ---------- */
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
   function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
-  function folder(m) { return "assets/images/games/" + slug(m.n) + "/"; }       /* one folder per game */
-  function iconSrc(m) { return m.img || (m.owner ? "" : folder(m) + "icon.png"); }
+  function folder(m) { return "assets/images/games/" + (m.folder || slug(m.n)) + "/"; }   /* one folder per game (or set folder:"..." in games-data.js) */
+  function iconSrc(m) { return m.img || (m.owner ? "" : encodeURI(folder(m) + "logo.svg")); }
   function ageOf(m) { return m.age || "3+"; }
   function shotUrls(m) {
-    return (m.shots || []).map(function (f) { return /^(https?:|data:|assets\/|\/)/.test(f) ? f : folder(m) + f; });
+    return (m.shots || []).map(function (f) { return /^(https?:|data:|assets\/|\/)/.test(f) ? f : encodeURI(folder(m) + f); });
   }
   function keyOf(m) { return m.id || m.n; }            /* library / downloads key (studio games: the name) */
   function find(key) { for (var i = 0; i < G.length; i++) if (keyOf(G[i]) === key && !G[i].removed) return i; return -1; }
   function isPaid(m) { return m.price > 0; }
+  function playUrl(m) { return m.play && !m.owner ? encodeURI(folder(m) + m.play) : ""; }   /* the game's own index.html */
+  function hasDownload(m) { return !!(m.android || m.ios || m.windows); }
   function isRoblox(m) { return m.type === "roblox"; }
   function owned(m) { return !isPaid(m) || !!(Store && Store.owns(keyOf(m))); }
   function safeUrl(u) { return /^https?:\/\//i.test(u || "") ? u : ""; }   /* never put javascript: links on a page */
   function ratingText(m) { return m.r > 0 ? "★ " + m.r : "New"; }
-  function actionHTML(i, small) {
+  function actionHTML(i, small, single) {
     var m = G[i], cls = "btn" + (small ? " sm" : "");
     if (isRoblox(m)) {
       var u = safeUrl(m.roblox);
       return '<a class="' + cls + ' red" href="' + esc(u || "#") + '" target="_blank" rel="noopener noreferrer"' + (u ? "" : ' aria-disabled="true"') + ">" + (small ? "Play" : "Play on Roblox") + "</a>";
     }
     if (isPaid(m) && !owned(m)) return '<button class="' + cls + ' gold" type="button" data-buy="' + i + '">Buy ₹' + m.price + "</button>";
-    return '<button class="' + cls + '" type="button" data-install="' + i + '">Install</button>';
+    var play = playUrl(m) ? '<button class="' + cls + ' cyan" type="button" data-play="' + i + '">▶ Play</button>' : "";
+    var inst = '<button class="' + cls + (play ? " ghost" : "") + '" type="button" data-install="' + i + '">Install</button>';
+    if (!play) return inst;
+    return single || !hasDownload(m) ? play : play + inst;
   }
+
   function pixelIcon(seed, c) {
     var x = seed * 9301 + 49297, cells = "";
     function rnd() { x = (x * 9301 + 49297) % 233280; return x / 233280; }
@@ -87,6 +93,8 @@
       if (ins) { install(Number(ins.getAttribute("data-install"))); return; }
       var buyB = e.target.closest("[data-buy]");
       if (buyB) { buy(Number(buyB.getAttribute("data-buy"))); return; }
+      var playB = e.target.closest("[data-play]");
+      if (playB) { play(Number(playB.getAttribute("data-play"))); return; }
       var del = e.target.closest("[data-delete]");
       if (del) { remove(Number(del.getAttribute("data-delete"))); return; }
       var link = e.target.closest(".card-link");   /* its ::after covers the whole card */
@@ -112,6 +120,7 @@
       if (e.target.closest("a")) return;   /* Roblox link opens by itself */
       if (e.target.closest("[data-install]")) install(hcIdx);
       else if (e.target.closest("[data-buy]")) buy(hcIdx);
+      else if (e.target.closest("[data-play]")) play(hcIdx);
       else openModal(hcIdx, hcCard);
     });
     document.body.appendChild(hc);
@@ -119,7 +128,7 @@
   function hoverHTML(i) {
     var m = G[i], shot = shotUrls(m)[0];
     return '<div class="hc-top"><div class="icon">' + iconHTML(i) + '</div><div class="hc-title"><h4>' + esc(m.n) +
-      '</h4><div class="meta">' + ratingText(m) + " · " + esc(m.g) + (isPaid(m) ? " · ₹" + m.price : "") + '</div></div>' + actionHTML(i, true) + '</div>' +
+      '</h4><div class="meta">' + ratingText(m) + " · " + esc(m.g) + (isPaid(m) ? " · ₹" + m.price : "") + '</div></div>' + actionHTML(i, true, true) + '</div>' +
       '<p class="hc-desc">' + esc(m.d) + "</p>" +
       (shot ? '<div class="hc-shot"><img src="' + esc(shot) + '" alt=""></div>' : "") +
       '<div class="hc-foot"><span class="age" title="Age rating">' + esc(ageOf(m)) + '</span><span>Click for all screenshots</span></div>';
@@ -185,8 +194,8 @@
     el.close.addEventListener("click", closeModal);
     gm.addEventListener("click", function (e) {
       if (e.target === gm) { closeModal(); return; }   /* click the blur to close */
-      var ib = e.target.closest("[data-install]"), bb = e.target.closest("[data-buy]");
-      if (ib) install(Number(ib.getAttribute("data-install"))); else if (bb) buy(Number(bb.getAttribute("data-buy")));
+      var ib = e.target.closest("[data-install]"), bb = e.target.closest("[data-buy]"), pb = e.target.closest("[data-play]");
+      if (ib) install(Number(ib.getAttribute("data-install"))); else if (bb) buy(Number(bb.getAttribute("data-buy"))); else if (pb) play(Number(pb.getAttribute("data-play")));
     });
     el.prev.addEventListener("click", function () { slideTo(cur - 1); });
     el.next.addEventListener("click", function () { slideTo(cur + 1); });
@@ -281,6 +290,39 @@
     if (opener && opener.focus) opener.focus({ preventScroll: true });
   }
 
+  /* ---------- play in the browser: runs the game's own index.html in a frame ---------- */
+  var pl = null, plEl = {};
+  function play(i) {
+    var m = G[i], url = playUrl(m);
+    if (!url || (isPaid(m) && !owned(m))) return;
+    if (!pl) {
+      pl = document.createElement("div"); pl.className = "pl-overlay"; pl.hidden = true;
+      pl.setAttribute("role", "dialog"); pl.setAttribute("aria-modal", "true"); pl.setAttribute("aria-label", "Game player");
+      pl.innerHTML = '<div class="pl-bar"><strong class="pl-title"></strong><button class="btn ghost sm" type="button" data-pl-full>Fullscreen</button>' +
+        '<a class="btn ghost sm" data-pl-tab target="_blank" rel="noopener">New tab</a><button class="btn sm" type="button" data-pl-close>Close</button></div>' +
+        '<iframe class="pl-frame" title="Game" allow="fullscreen; gamepad; autoplay; clipboard-write" sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-forms allow-popups allow-modals"></iframe>';
+      document.body.appendChild(pl);
+      plEl.frame = pl.querySelector("iframe"); plEl.title = pl.querySelector(".pl-title"); plEl.tab = pl.querySelector("[data-pl-tab]");
+      pl.addEventListener("click", function (e) {
+        if (e.target.closest("[data-pl-close]")) closePlayer();
+        else if (e.target.closest("[data-pl-full]")) { var f = pl.requestFullscreen || pl.webkitRequestFullscreen; if (f) f.call(pl); }
+      });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && pl && !pl.hidden && !document.fullscreenElement) closePlayer(); });
+    }
+    hideHover();
+    plEl.title.textContent = m.n; plEl.tab.href = url; plEl.frame.src = url;
+    pl.hidden = false; document.documentElement.classList.add("modal-open");
+    requestAnimationFrame(function () { pl.classList.add("open"); });
+    plEl.frame.focus();
+  }
+  function closePlayer() {
+    if (!pl || pl.hidden) return;
+    if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+    pl.classList.remove("open"); plEl.frame.src = "about:blank";   /* stops the game */
+    setTimeout(function () { if (!pl.classList.contains("open")) pl.hidden = true; }, 260);
+    if (!gm || gm.hidden) document.documentElement.classList.remove("modal-open");
+  }
+
   /* ---------- install / buy: both need an account ---------- */
   function ask(why) { return window.QPAuthUI ? window.QPAuthUI.require(why) : Promise.resolve(true); }
   function install(i) {
@@ -370,6 +412,6 @@
     if (gm && !gm.hidden) el.cta.innerHTML = actionHTML(gmIdx, false);
   });
 
-  window.QPGames = { list: G, render: render, mount: mount, install: install, buy: buy, open: openModal, find: find,
+  window.QPGames = { list: G, render: render, mount: mount, install: install, buy: buy, play: play, open: openModal, find: find,
     key: keyOf, icon: iconHTML, wire: wire, slug: slug };
 })();
