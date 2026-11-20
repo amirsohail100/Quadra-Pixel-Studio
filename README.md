@@ -1,6 +1,6 @@
 <div align="center">
   <!-- Replace the src path below with your actual SVG logo file path -->
-  <img src="./assets/images/logo.svg" alt="Quadra Pixel Logo" width="140" height="140" />
+  <img src="./assets/images/logo-icon.svg" alt="Quadra Pixel Logo" width="140" height="140" />
   <h1>Quadra Pixel</h1>
   <p>
     <strong>An itch.io & Microsoft Store-Style Digital Game Storefront of the Quadra Ecosystem</strong>
