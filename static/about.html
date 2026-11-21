@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About – Quadra Pixel</title>
+<meta name="description" content="Meet the two people behind Quadra Pixel.">
+<meta name="theme-color" content="#07070d">
+<script>try{var t=localStorage.getItem("qp-theme");if(t==="system")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("qp-motion")==="reduced")document.documentElement.classList.add("reduce-motion")}catch(e){}</script>
+<link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="has-sidebar">
+<aside class="sidebar" aria-label="Main navigation">
+  <div>
+    <a class="side-logo" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt=""></a>
+    <nav class="side-group top" aria-label="Pages"><a class="side-link" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a><a class="side-link" href="games.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="3"/><path d="M7 10v5M4.5 12.5h5"/><path d="M16 11h.01M18.5 14h.01"/></svg><span>Games</span></a><a class="side-link" href="help.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg><span>Help</span></a><a class="side-link" href="about.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14c3 0 4.5 2 4.5 5"/></svg><span>About</span></a></nav>
+  </div>
+  <nav class="side-group bottom" aria-label="Your account"><a class="side-link" href="downloads.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg><span>Downloads</span></a><a class="side-link" href="library.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="4" height="18" rx="1"/><rect x="10" y="3" width="4" height="18" rx="1"/><path d="M16.5 5.5l4 14.5"/></svg><span>Library</span></a><a class="side-link" href="settings.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Settings</span></a></nav>
+</aside>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html" aria-label="Quadra Pixel home"><img src="assets/images/logo-icon.svg" alt="">Quadra<b>Pixel</b></a>
+    <div class="actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to light mode"><span class="ico" aria-hidden="true">☀</span></button>
+      <div class="auth-slot" id="authSlot"></div>
+    </div>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <div class="page-title">
+    <p class="eyebrow">The team</p>
+    <h1>Two people, <span class="accent-r">one studio</span></h1>
+    <p>Quadra Pixel is made by two friends. Here is who we are and what we do.</p>
+  </div>
+  <div class="team">
+    <article class="profile left">
+      <!-- PHOTO: replace the file at assets/images/team/friend.svg with your own image (keep the same name, or change the src) -->
+      <div class="avatar"><img src="assets/images/team/friend.svg" alt="Photo of Friend Name"></div>
+      <div><div class="role">Artist · Game designer</div><h3 style="font-size:30px;margin-top:4px">Friend Name</h3></div>
+      <p class="bio">Write a short intro about your friend here: what they do in the studio, what they love making, and how they got started.</p>
+      <h4>Skills</h4>
+      <div class="skills"><div class="skill"><div class="name"><span>Pixel art</span><span>90%</span></div><div class="track"><div class="fill" style="--lvl:90%"></div></div></div><div class="skill"><div class="name"><span>Animation</span><span>75%</span></div><div class="track"><div class="fill" style="--lvl:75%"></div></div></div><div class="skill"><div class="name"><span>Game design</span><span>80%</span></div><div class="track"><div class="fill" style="--lvl:80%"></div></div></div></div>
+      <h4>Tools</h4>
+      <div class="tags"><span>Aseprite</span><span>Photoshop</span><span>Figma</span></div>
+      <div class="links"><a href="#">Portfolio</a><a href="#">GitHub</a><a href="#">Instagram</a></div>
+    </article>
+    <article class="profile right">
+      <!-- PHOTO: replace the file at assets/images/team/me.svg with your own image (keep the same name, or change the src) -->
+      <div class="avatar"><img src="assets/images/team/me.svg" alt="Photo of Your Name"></div>
+      <div><div class="role">Developer · Web &amp; data</div><h3 style="font-size:30px;margin-top:4px">Your Name</h3></div>
+      <p class="bio">Write a short intro about yourself here: what you build, what you enjoy, and what you want players to feel.</p>
+      <h4>Skills</h4>
+      <div class="skills"><div class="skill"><div class="name"><span>Programming</span><span>90%</span></div><div class="track"><div class="fill" style="--lvl:90%"></div></div></div><div class="skill"><div class="name"><span>Web development</span><span>85%</span></div><div class="track"><div class="fill" style="--lvl:85%"></div></div></div><div class="skill"><div class="name"><span>Databases</span><span>70%</span></div><div class="track"><div class="fill" style="--lvl:70%"></div></div></div></div>
+      <h4>Tools</h4>
+      <div class="tags"><span>JavaScript</span><span>Python</span><span>Firebase</span></div>
+      <div class="links"><a href="#">Portfolio</a><a href="#">GitHub</a><a href="#">Instagram</a></div>
+    </article>
+  </div>
+  <div class="cta">
+    <div><h2>Want to say hi?</h2><p class="muted" style="margin-top:8px">Questions, ideas or collaboration — we read everything.</p></div>
+    <a class="btn cyan" href="help.html">Contact us</a>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap foot-in">
+    <span>© <span id="year">2026</span> Quadra Pixel · Indie game development</span>
+    <nav aria-label="Footer"><a href="index.html">Home</a><a href="games.html">Games</a><a href="help.html">Help</a><a href="about.html">About</a></nav>
+  </div>
+</footer>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/store.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
