@@ -2,3 +2,7 @@
 Thumbs.db
 node_modules/
 .firebase/
+build/
+dist/
+__pycache__/
+*.pyc
